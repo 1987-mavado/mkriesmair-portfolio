@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Impressum — Markus Kriesmair" description="Impressum von Markus Kriesmair, Creative Director, München." lang="de">
+  <header class="wrap imp-head">
+    <a href="/" aria-label="markus kriesmair — zur Startseite">
+      <img src="/uploads/240316-logo-markus-kriesmair-abbinder.png" alt="markus kriesmair" />
+    </a>
+    <a href="/" class="imp-back">← back</a>
+  </header>
+  <main class="wrap grid imp">
+    <div class="c-label label">(imprint)</div>
+    <div class="c-main">
+      <h1 class="tanker">Impressum</h1>
+
+      <section>
+        <h2>Angaben zum Diensteanbieter</h2>
+        <p>Markus Kriesmair<br />Creative Director<br />Spicherenstraße 3<br />81667 München<br />Deutschland</p>
+      </section>
+
+      <section>
+        <h2>Kontakt</h2>
+        <p>
+          Telefon: <a href="tel:+4917632838362">+49 176 32838362</a><br />
+          E-Mail: <a href="mailto:mail@mkriesmair.de">mail@mkriesmair.de</a>
+        </p>
+      </section>
+
+      <section>
+        <h2>Umsatzsteuer-Identifikationsnummer</h2>
+        <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br />DE359446275</p>
+      </section>
+
+      <section>
+        <h2>Website</h2>
+        <p>mkriesmair.online</p>
+      </section>
+
+      <section>
+        <h2>Verantwortlich für den Inhalt</h2>
+        <p>Markus Kriesmair<br />Spicherenstraße 3<br />81667 München<br />Deutschland</p>
+      </section>
+    </div>
+  </main>
+  <footer class="wrap imp-foot label">
+    <span>Markus Kriesmair — Portfolio 2026</span>
+    <a href="/">Home</a>
+  </footer>
+</Base>
+
+<style>
+  .imp-head { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-top: 20px; padding-bottom: 20px; }
+  .imp-head img { display: block; height: 44px; width: auto; max-width: 56vw; filter: invert(1); }
+  .imp-back { font-size: 16px; font-weight: 300; }
+  .imp { padding-top: clamp(64px, 10vw, 140px); padding-bottom: 80px; row-gap: 24px; }
+  h1 { margin: 0 0 56px; font-size: clamp(48px, 7vw, 96px); line-height: .95; text-transform: uppercase; }
+  section { padding: 28px 0; border-top: 1px solid var(--line); max-width: 60ch; }
+  h2 { margin: 0 0 12px; font-family: 'Satoshi', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: .02em; color: var(--label); }
+  p { margin: 0; font-size: 16px; line-height: 1.55; font-weight: 300; color: var(--text-2); }
+  .imp-foot { display: flex; justify-content: space-between; gap: 16px; padding-top: 24px; padding-bottom: 40px; }
+  .imp-foot a { color: var(--label); }
+</style>

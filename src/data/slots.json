@@ -1,0 +1,146 @@
+{
+ "m3-case-saturn": {
+  "src": "/slots/m3-case-saturn.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "m3-case-tonline": {
+  "src": "/slots/m3-case-tonline.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "m3-case-db": {
+  "src": "/slots/m3-case-db.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "m3-case-o2": {
+  "src": "/slots/m3-case-o2.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "m3-concept-key-visual": {
+  "src": "/slots/m3-concept-key-visual.webp",
+  "s": 1,
+  "x": -1.1076011725716178e-14,
+  "y": 0
+ },
+ "award-cannes": {
+  "src": "/slots/award-cannes.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "award-adc": {
+  "src": "/slots/award-adc.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "award-effie": {
+  "src": "/slots/award-effie.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-dream-1": {
+  "src": "/slots/ducati-dream-1.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-dream-2": {
+  "src": "/slots/ducati-dream-2.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-dream-3": {
+  "src": "/slots/ducati-dream-3.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-dream-5": {
+  "src": "/slots/ducati-dream-5.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-dream-6": {
+  "src": "/slots/ducati-dream-6.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-dream-4": {
+  "src": "/slots/ducati-dream-4.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "detail-ducati": {
+  "src": "/slots/detail-ducati.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "m3-case-ducati": {
+  "src": "/slots/m3-case-ducati.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "m3-case-tonline-v2": {
+  "src": "/slots/m3-case-tonline-v2.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-bella-1": {
+  "src": "/slots/ducati-bella-1.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-bella-2": {
+  "src": "/slots/ducati-bella-2.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-bella-3": {
+  "src": "/slots/ducati-bella-3.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-bella-4": {
+  "src": "/slots/ducati-bella-4.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-bella-5": {
+  "src": "/slots/ducati-bella-5.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "ducati-bella-6": {
+  "src": "/slots/ducati-bella-6.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ },
+ "detail-tonline": {
+  "src": "/slots/detail-tonline.webp",
+  "s": 1,
+  "x": 0,
+  "y": 0
+ }
+}

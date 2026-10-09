@@ -1,0 +1,139 @@
+/* Design tokens, base styles and keyframes — carried over from the design handoff
+   (Portfolio Site v11). Fonts are self-hosted (GDPR): Tanker + Satoshi locally,
+   the rest via @fontsource packages. */
+@font-face { font-family: 'Tanker'; src: url('/fonts/Tanker-Regular.woff2') format('woff2'), url('/fonts/Tanker-Regular.woff') format('woff'), url('/fonts/Tanker-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-300.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-700.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-900.woff2') format('woff2'); font-weight: 900; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; }
+
+:root {
+  --g-cols: 12; --g-gap: 24px; --g-m: 40px;
+  --g-full: 1 / -1; --g-label: 1 / span 3; --g-main: 4 / -1;
+  --g-rows: 1 / span 6; --g-row: 1;
+  --g-a7: 1 / span 7; --g-b4: 9 / -1; --g-a4: 1 / span 4; --g-b7: 6 / -1;
+  --g-l5: 1 / span 5; --g-r5: 8 / -1; --g-r6: 7 / -1; --g-m6: 4 / span 6;
+  --g-r3: 10 / -1; --g-q3: span 3; --g-half: span 6;
+  --g-l5proc: 4 / span 4; --g-r5proc: 8 / -1;
+  --bg: #0C0D0F; --surface: #16181B; --surface-2: #1F2226;
+  --line: #26292E; --line-2: #3A3E45;
+  --text: #F2F2F0; --text-2: #D6D8DC; --muted: #A9ADB4; --label: #8C9098; --dim: #5B5F66;
+  --mark-bg: #FFE86B;
+}
+@media (max-width: 900px) {
+  :root {
+    --g-cols: 6; --g-gap: 16px; --g-m: 20px;
+    --g-label: 1 / -1; --g-main: 1 / -1; --g-rows: auto; --g-row: auto;
+    --g-a7: 1 / -1; --g-b4: 1 / -1; --g-a4: 1 / -1; --g-b7: 1 / -1;
+    --g-l5: 1 / -1; --g-r5: 1 / -1; --g-r6: 1 / -1; --g-m6: 1 / -1; --g-r3: 1 / -1;
+    --g-q3: span 3; --g-half: 1 / -1; --g-l5proc: 1 / -1; --g-r5proc: 1 / -1;
+  }
+}
+@media (max-width: 560px) { :root { --g-q3: 1 / -1; } }
+
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+body {
+  margin: 0; overflow-x: clip; background: var(--bg); color: var(--text);
+  font-family: 'Satoshi', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--text); text-decoration: none; }
+a:hover { color: #FFFFFF; text-decoration: underline; text-underline-offset: 3px; }
+::selection { background: var(--text); color: var(--bg); }
+[data-scroller] { scrollbar-width: none; }
+[data-scroller]::-webkit-scrollbar { display: none; }
+
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--g-m); }
+.grid { display: grid; grid-template-columns: repeat(var(--g-cols), minmax(0, 1fr)); column-gap: var(--g-gap); }
+.tanker { font-family: 'Tanker', 'Satoshi', sans-serif; font-weight: 400; letter-spacing: 0; }
+.label { font-family: 'Satoshi', sans-serif; font-size: 13px; letter-spacing: .04em; color: var(--label); }
+.label-500 { font-family: 'Satoshi', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: .02em; color: var(--label); }
+.lead { margin: 0; font-size: clamp(20px, 1.8vw, 28px); font-weight: 300; line-height: 1.35; color: var(--label); text-wrap: pretty; }
+.body-m { margin: 0; font-size: 16px; line-height: 1.55; font-weight: 300; color: var(--muted); text-wrap: pretty; }
+.body-s { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 300; color: var(--muted); text-wrap: pretty; }
+mark.ph { background: var(--mark-bg); color: #000000; padding: 1px 4px; }
+
+/* shared layout spans */
+.c-full { grid-column: var(--g-full); }
+.c-label { grid-column: var(--g-label); }
+.c-main { grid-column: var(--g-main); }
+.c-m6 { grid-column: var(--g-m6); }
+.c-a7 { grid-column: var(--g-a7); }
+.c-b4 { grid-column: var(--g-b4); }
+.c-a4 { grid-column: var(--g-a4); }
+.c-b7 { grid-column: var(--g-b7); }
+.c-l5 { grid-column: var(--g-l5); }
+.c-r5 { grid-column: var(--g-r5); }
+.c-r6 { grid-column: var(--g-r6); }
+.c-l5proc { grid-column: var(--g-l5proc); }
+.c-r5proc { grid-column: var(--g-r5proc); }
+
+/* hover / focus */
+.hv-gray:hover { color: var(--label) !important; text-decoration: none !important; }
+.hv-white-u:hover { color: #FFFFFF !important; text-decoration: underline !important; text-underline-offset: 3px !important; }
+.hv-white:hover { color: var(--text) !important; }
+.hv-invert:hover { background: var(--text) !important; color: var(--bg) !important; }
+.hv-surface:hover { background: var(--surface-2) !important; text-decoration: none !important; }
+.focus-ring2:focus-visible { outline: 2px solid var(--text) !important; outline-offset: 2px !important; }
+.focus-ring4:focus-visible { outline: 2px solid var(--text) !important; outline-offset: 4px !important; }
+.focus-shadow:focus-visible { box-shadow: 0 0 0 2px var(--label) !important; }
+
+@keyframes mkA { 0% { opacity: 0; filter: blur(10px); transform: translateY(.12em); } 5%, 14% { opacity: 1; filter: blur(0); transform: none; } 19%, 100% { opacity: 0; filter: blur(10px); transform: translateY(-.12em); } }
+@keyframes mkB { 0% { opacity: 1; clip-path: inset(0 100% 0 0); } 5%, 14% { opacity: 1; clip-path: inset(0 0 0 0); } 19% { opacity: 1; clip-path: inset(0 0 0 100%); } 19.5%, 100% { opacity: 0; clip-path: inset(0 0 0 100%); } }
+@keyframes mkC { 0% { opacity: 0; transform: scale(.8); } 5%, 14% { opacity: 1; transform: none; } 19%, 100% { opacity: 0; transform: scale(1.12); } }
+@keyframes mkD { 0% { opacity: 0; letter-spacing: .35em; } 6%, 14% { opacity: 1; letter-spacing: -0.03em; } 19%, 100% { opacity: 0; letter-spacing: -0.12em; } }
+@keyframes mkE { 0% { opacity: 0; transform: translateX(-.4em) skewX(-24deg); } 5%, 14% { opacity: 1; transform: none; } 19%, 100% { opacity: 0; transform: translateX(.4em) skewX(18deg); } }
+@keyframes mkF { 0% { opacity: 1; clip-path: inset(100% 0 0 0); transform: translateY(.3em); } 5%, 14% { opacity: 1; clip-path: inset(0 0 0 0); transform: none; } 19% { opacity: 1; clip-path: inset(0 0 100% 0); transform: translateY(-.3em); } 19.5%, 100% { opacity: 0; clip-path: inset(0 0 100% 0); } }
+@keyframes mkMarq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes mkFlow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1000; } }
+@keyframes mkRing { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes mkScan { from { background-position: 0 0; } to { background-position: 0 8px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-mk-cut] > span { animation: none !important; opacity: 0; }
+  [data-mk-cut] > span:first-child { opacity: 1; }
+  [data-marq], [data-flow] [data-anim] { animation: none !important; }
+  [data-flow] [data-anim] { opacity: 0; }
+  [data-fade] [data-w] { opacity: 1 !important; transition: none !important; }
+}
+[data-scroller] { scrollbar-width: none; }
+[data-scroller]::-webkit-scrollbar { display: none; }
+
+/* Header nav: never wraps item by item. Below 760px the whole nav drops onto its own row
+   under the logo and spreads across the full width, so "contact" is neither orphaned nor squeezed. */
+.site-nav { flex-wrap: nowrap !important; white-space: nowrap; }
+@media (max-width: 760px) {
+  .site-nav { flex: 1 0 100%; justify-content: space-between; gap: 6px !important; font-size: clamp(10px, 4vw, 16px) !important; min-width: 0; }
+}
+
+/* Hero: centre the status line, CTAs and meta row in portrait orientation. */
+@media (orientation: portrait) {
+  [data-hero-row] { flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center; padding-right: var(--g-m) !important; }
+  [data-hero-ctas] { justify-content: center !important; margin-left: 0 !important; }
+}
+
+/* Hero (landscape): the box follows the 16:9 film, so the video scales down with the
+   viewport width instead of being cropped — top-anchored, never letterboxed. Capped at
+   one screen height; the cover-fit iframe then trims the bottom edge only. */
+@media (orientation: landscape) {
+  #top { min-height: min(56.25vw, 100vh) !important; }
+}
+
+/* The header floats over the hero without taking up layout height, so the hero video
+   always starts at the very top — also when the nav wraps onto a second row. */
+header.site-header { height: 0 !important; }
+#top { margin-top: 0 !important; }
+
+/* Hero (portrait): full screen height, so the 9:16 film is shown whole. */
+@media (orientation: portrait) {
+  #top { min-height: 100vh !important; min-height: 100svh !important; }
+}
+
+/* Hero CTAs: when they stack, the line distance is 1.5 times the font size (20px type, 30px line to line). */
+[data-hero-ctas] { row-gap: 10px !important; }
+[data-hero-ctas] > a { line-height: 1 !important; }
