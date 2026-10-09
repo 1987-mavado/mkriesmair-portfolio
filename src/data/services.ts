@@ -1,16 +1,8 @@
 // Content of the three service pages (Art Director / Creative Director / Creative Strategist),
 // in German and English. Every statement here is taken from the portfolio's own case data.
+// Which cases each page shows is defined in seo.ts (serviceCases).
 import type { Lang, RouteKey } from './seo';
 
-type CaseRef = {
-  key: string; // case anchor on the home page: /#case-<anchor>
-  anchor: string;
-  img: string;
-  brand: string;
-  title: string;
-  body: string;
-  role: string;
-};
 type Focus = { title: string; body: string };
 export type Service = {
   route: Exclude<RouteKey, 'home'>;
@@ -23,20 +15,10 @@ export type Service = {
   focus: Focus[];
   workLabel: string;
   workIntro: string;
-  cases: CaseRef[];
   expLabel: string;
   exp: string[];
 };
 
-const IMG = {
-  ducati: '/slots/m3-case-ducati.webp',
-  o2: '/slots/m3-case-o2.webp',
-  bmw2: '/assets/bmw2-coupe.webp',
-  bmwx4: '/assets/bmwx4-ooh-front.webp',
-  tonline: '/slots/m3-case-tonline-v2.webp',
-  saturn: '/slots/m3-case-saturn.webp',
-  db: '/slots/m3-case-db.webp',
-};
 
 export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> = {
   de: {
@@ -56,13 +38,7 @@ export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> 
         { title: 'Art Direction mit GenAI', body: 'Bildgenerierung dort, wo sie Konzepte schneller sichtbar macht – wie beim Key Visual für das O₂ Record Race.' },
       ],
       workLabel: '(02) ausgewählte arbeiten',
-      workIntro: 'Vier Kampagnen, bei denen die Art Direction den Unterschied gemacht hat.',
-      cases: [
-        { key: 'bmwx4', anchor: 'case-bmwx4', img: IMG.bmwx4, brand: 'BMW X4', title: 'Ein neues Segment, eingeführt mit Haltung.', body: 'Eine eigenständige deutsche Launch-Kampagne statt einer Adaption – mit zwei neu komponierten Key-Motiven rund um die Coupé-Linie.', role: 'Art Director' },
-        { key: 'saturn', anchor: 'case-saturn', img: IMG.saturn, brand: 'Saturn Tech-Nick', title: 'Technik, bei der man sich zu fragen traut.', body: 'Eine Figur als Kampagnenplattform: visuelle Gestaltung, Corporate Campaign Design und ganzjährige Qualitätssicherung über alle Kanäle.', role: 'Art Director, Leitung des Art-Teams' },
-        { key: 'bmw2', anchor: 'case-bmw2', img: IMG.bmw2, brand: 'BMW 2er', title: 'Ein Auto für Amerika – relevant gemacht für Deutschland.', body: 'Art Direction der Heritage-Route: das 2er Coupé als Erbe des BMW 2002, vollendet von den Fans.', role: 'Art Director, deutsche Adaption' },
-        { key: 'o2', anchor: 'case-o2', img: IMG.o2, brand: 'O₂ Record Race', title: 'Ein Weltrekord, den die Gaming-Community selbst aufgestellt hat.', body: 'Art Direction und Key Visual für den Weltrekordversuch mit PlayStation – inklusive KI-generiertem Artwork.', role: 'Kreativkonzept & Kampagnenarchitektur' },
-      ],
+      workIntro: 'Kampagnen, bei denen die Art Direction den Unterschied gemacht hat.',
       expLabel: '(03) erfahrung',
       exp: [
         '14+ Jahre Art Direction in führenden Agenturen: Heye & Partner, Serviceplan, Grabarz & Partner, GGH MullenLowe und thjnk – dort als Senior Art Director für Deutsche Bahn und Commerzbank.',
@@ -85,13 +61,7 @@ export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> 
         { title: 'Einspringen und übergeben', body: 'Als Art / Creative Director für den Übergang bei O₂ gebucht: Wissen ins neue Team gebracht und die Arbeit am Laufen gehalten.' },
       ],
       workLabel: '(02) ausgewählte arbeiten',
-      workIntro: 'Vier Projekte, bei denen es um Führung und Gesamtverantwortung ging.',
-      cases: [
-        { key: 'db', anchor: 'case-db', img: IMG.db, brand: 'Deutsche Bahn', title: 'Jobs, gezeigt, wie sie wirklich sind.', body: 'Leitung des Art-Teams für die Arbeitgebermarke: Kundenbriefing geschärft, die kreative Arbeit ausgewählt, die Produktion bis zur Auslieferung geführt.', role: 'Senior Art Director, Leitung des Art-Teams' },
-        { key: 'tonline', anchor: 'case-tonline', img: IMG.tonline, brand: 't-online', title: 'Vertrauen braucht Konsistenz.', body: 'Die Neupositionierung auf Unternehmensseite geführt: Narrativ, Corporate Design, Kampagne und Sound Branding mit externen Partnern und internen Teams.', role: 'Markenführung auf Unternehmensseite' },
-        { key: 'saturn', anchor: 'case-saturn', img: IMG.saturn, brand: 'Saturn Tech-Nick', title: 'Technik, bei der man sich zu fragen traut.', body: 'Ganzjährige Kampagnenleitung mit drei Junior Art Directors und einem Praktikanten – spontane Markenbekanntheit 80 % über Ziel.', role: 'Art Director, Leitung des Art-Teams' },
-        { key: 'o2', anchor: 'case-o2', img: IMG.o2, brand: 'O₂ Record Race', title: 'Ein Weltrekord, den die Gaming-Community selbst aufgestellt hat.', body: 'Kreativkonzept und Kampagnenarchitektur, die Live-Event, Microsite, Gaming-Creator und Social verbindet.', role: 'Kreativkonzept & Kampagnenarchitektur' },
-      ],
+      workIntro: 'Projekte, bei denen es um kreative Führung und Gesamtverantwortung ging.',
       expLabel: '(03) erfahrung',
       exp: [
         'Selbstständiger Creative Director für Agenturen und direkt für Marken – O₂, Ducati, AOK, EDEKA, Mondelēz, BioNTech, Das Handwerk.',
@@ -114,13 +84,7 @@ export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> 
         { title: 'Kampagnenarchitektur', body: 'Die Idee so aufbauen, dass sie über Kanäle und Phasen funktioniert – vom Markenfilm bis zur Conversion.' },
       ],
       workLabel: '(02) ausgewählte arbeiten',
-      workIntro: 'Vier Projekte, bei denen die Strategie die kreative Arbeit geprägt hat.',
-      cases: [
-        { key: 'ducati', anchor: 'case-ducati', img: IMG.ducati, brand: 'Ducati Deutschland', title: 'Einen Traum verkaufen – in einem Land der Reiseenduros.', body: 'Modellspezifische Positionierung für drei Modelle unter einem Jahresthema: der Traum. Cost per Lead −43 %, Conversion Rate +110 % in der Gesamtkampagne.', role: 'Externer Kreativ- und Strategieberater' },
-        { key: 'tonline', anchor: 'case-tonline', img: IMG.tonline, brand: 't-online', title: 'Vertrauen braucht Konsistenz.', body: 'Vom Telekom-Portal zur unabhängigen journalistischen Marke – gebaut um den Wert des Verstehens, nicht nur um Information.', role: 'Markenführung auf Unternehmensseite' },
-        { key: 'bmw2', anchor: 'case-bmw2', img: IMG.bmw2, brand: 'BMW 2er', title: 'Ein Auto für Amerika – relevant gemacht für Deutschland.', body: 'Kein neues Auto einführen, sondern eine Legende fortsetzen: ein US-getriebenes Produkt, neu positioniert als Erbe des BMW 2002.', role: 'Art Director, deutsche Adaption' },
-        { key: 'db', anchor: 'case-db', img: IMG.db, brand: 'Deutsche Bahn', title: 'Jobs, gezeigt, wie sie wirklich sind.', body: 'Eine Zielgruppenanalyse zeigte: Azubis müssen anders angesprochen werden. Daraus entstand eine eigene, jüngere Designvariante der Arbeitgebermarke.', role: 'Senior Art Director, Leitung des Art-Teams' },
-      ],
+      workIntro: 'Projekte, bei denen die Strategie die kreative Arbeit geprägt hat.',
       expLabel: '(03) erfahrung',
       exp: [
         'Strategie und Kreation aus einer Hand: Kreativkonzept und Kampagnenstrategie für Union Investment, Positionierung für Ducati, Markenführung für t-online.',
@@ -145,13 +109,7 @@ export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> 
         { title: 'Art direction with GenAI', body: 'Image generation where it makes concepts visible faster — as with the key visual for the O₂ Record Race.' },
       ],
       workLabel: '(02) selected work',
-      workIntro: 'Four campaigns where the art direction made the difference.',
-      cases: [
-        { key: 'bmwx4', anchor: 'case-bmwx4', img: IMG.bmwx4, brand: 'BMW X4', title: 'A new segment, launched with attitude.', body: 'A standalone German launch campaign instead of an adaptation — with two newly composed key motifs built around the coupé line.', role: 'Art Director' },
-        { key: 'saturn', anchor: 'case-saturn', img: IMG.saturn, brand: 'Saturn Tech-Nick', title: 'Making technology feel easy to ask about.', body: 'One character as a campaign platform: visual design, corporate campaign design and year-round quality assurance across every channel.', role: 'Art Director, lead of the art team' },
-        { key: 'bmw2', anchor: 'case-bmw2', img: IMG.bmw2, brand: 'BMW 2 Series', title: 'A car built for America, made to matter in Germany.', body: 'Art direction for the heritage-led route: the 2 Series Coupé as heir to the BMW 2002, finished by the fans.', role: 'Art Director, German adaptation' },
-        { key: 'o2', anchor: 'case-o2', img: IMG.o2, brand: 'O₂ Record Race', title: 'A world record the gaming community set themselves.', body: 'Art direction and key visual for the world record attempt with PlayStation — including AI-generated artwork.', role: 'Creative concept & campaign architecture' },
-      ],
+      workIntro: 'Campaigns where the art direction made the difference.',
       expLabel: '(03) experience',
       exp: [
         '14+ years of art direction at leading agencies: Heye & Partner, Serviceplan, Grabarz & Partner, GGH MullenLowe and thjnk — there as Senior Art Director for Deutsche Bahn and Commerzbank.',
@@ -174,13 +132,7 @@ export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> 
         { title: 'Stepping in, handing over', body: 'Booked as interim Art / Creative Director on O₂: brought my knowledge into the new team and kept the work running.' },
       ],
       workLabel: '(02) selected work',
-      workIntro: 'Four projects that were about leadership and overall responsibility.',
-      cases: [
-        { key: 'db', anchor: 'case-db', img: IMG.db, brand: 'Deutsche Bahn', title: 'Jobs shown as they really are.', body: 'Led the art team for the employer brand: sharpened the client brief, selected the creative work and led production through to delivery.', role: 'Senior Art Director, lead of the art team' },
-        { key: 'tonline', anchor: 'case-tonline', img: IMG.tonline, brand: 't-online', title: 'Trust needs consistency.', body: 'Led the repositioning from the client side: narrative, corporate design, campaign and sound branding with external partners and internal teams.', role: 'Brand management, client side' },
-        { key: 'saturn', anchor: 'case-saturn', img: IMG.saturn, brand: 'Saturn Tech-Nick', title: 'Making technology feel easy to ask about.', body: 'Year-round campaign lead with three Junior Art Directors and an intern — spontaneous brand awareness 80 % above target.', role: 'Art Director, lead of the art team' },
-        { key: 'o2', anchor: 'case-o2', img: IMG.o2, brand: 'O₂ Record Race', title: 'A world record the gaming community set themselves.', body: 'Creative concept and a campaign architecture connecting live event, microsite, gaming creators and social.', role: 'Creative concept & campaign architecture' },
-      ],
+      workIntro: 'Projects that were about creative leadership and overall responsibility.',
       expLabel: '(03) experience',
       exp: [
         'Independent Creative Director for agencies and brands directly — O₂, Ducati, AOK, EDEKA, Mondelēz, BioNTech, Das Handwerk.',
@@ -203,13 +155,7 @@ export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> 
         { title: 'Campaign architecture', body: 'Building the idea so it works across channels and phases — from brand film to conversion.' },
       ],
       workLabel: '(02) selected work',
-      workIntro: 'Four projects where strategy shaped the creative work.',
-      cases: [
-        { key: 'ducati', anchor: 'case-ducati', img: IMG.ducati, brand: 'Ducati Germany', title: 'Selling a dream to a country of touring bikes.', body: 'Model-specific positioning for three models under one theme for the year: the dream. Cost per lead −43 %, conversion rate +110 % for the overall campaign.', role: 'External creative & strategy consultant' },
-        { key: 'tonline', anchor: 'case-tonline', img: IMG.tonline, brand: 't-online', title: 'Trust needs consistency.', body: 'From Telekom portal to independent journalistic brand — built around the value of understanding, not just information.', role: 'Brand management, client side' },
-        { key: 'bmw2', anchor: 'case-bmw2', img: IMG.bmw2, brand: 'BMW 2 Series', title: 'A car built for America, made to matter in Germany.', body: 'Don’t launch a new car — continue a legend: a US-led product repositioned as heir to the BMW 2002.', role: 'Art Director, German adaptation' },
-        { key: 'db', anchor: 'case-db', img: IMG.db, brand: 'Deutsche Bahn', title: 'Jobs shown as they really are.', body: 'An audience analysis showed that apprentices need to be addressed differently. The result: a dedicated, younger design variant of the employer brand.', role: 'Senior Art Director, lead of the art team' },
-      ],
+      workIntro: 'Projects where strategy shaped the creative work.',
       expLabel: '(03) experience',
       exp: [
         'Strategy and creative work from one source: creative concept and campaign strategy for Union Investment, positioning for Ducati, brand management for t-online.',
@@ -222,16 +168,16 @@ export const services: Record<Lang, Record<Exclude<RouteKey, 'home'>, Service>> 
 export const ui = {
   de: {
     navHome: 'portfolio', navArt: 'art direction', navCd: 'creative direction', navStrategy: 'creative strategy', navContact: 'kontakt',
-    role: 'Rolle', seeCase: 'Case ansehen', also: '(04) auch', alsoIntro: 'Drei Rollen, eine durchgängige Kompetenz – von der Strategie über die Idee bis zur Umsetzung.',
+    also: '(04) auch', alsoIntro: 'Drei Rollen, eine durchgängige Kompetenz – von der Strategie über die Idee bis zur Umsetzung.',
     contactLabel: '(05) kontakt', contactH: 'Sprechen wir über Ihr Projekt.', contactLead: 'Freelance als Art Director, Creative Director oder Creative Strategist. Vollständige Case-Präsentationen und Referenzen auf Anfrage.',
-    email: 'e-mail', phone: 'telefon', profile: 'profil', allWork: 'Alle Arbeiten ansehen', imprint: 'Impressum', footer: 'Markus Kriesmair — Portfolio 2026', langLabel: 'Sprache',
+    email: 'e-mail', phone: 'telefon', profile: 'profil', allWork: 'Alle Arbeiten ansehen', imprint: 'Impressum', caseLabel: '(case)', moreWork: '(mehr arbeiten)', openCase: 'Case öffnen', footer: 'Markus Kriesmair — Portfolio 2026', langLabel: 'Sprache',
     names: { art: 'Art Direction', cd: 'Creative Direction', strategy: 'Creative Strategy' },
   },
   en: {
     navHome: 'portfolio', navArt: 'art direction', navCd: 'creative direction', navStrategy: 'creative strategy', navContact: 'contact',
-    role: 'Role', seeCase: 'See the case', also: '(04) also', alsoIntro: 'Three roles, one continuous skill — from strategy to idea to delivery.',
+    also: '(04) also', alsoIntro: 'Three roles, one continuous skill — from strategy to idea to delivery.',
     contactLabel: '(05) contact', contactH: 'Let’s talk about your project.', contactLead: 'Freelance as Art Director, Creative Director or Creative Strategist. Full case decks and references on request.',
-    email: 'email', phone: 'phone', profile: 'profile', allWork: 'See all work', imprint: 'Imprint', footer: 'Markus Kriesmair — Portfolio 2026', langLabel: 'Language',
+    email: 'email', phone: 'phone', profile: 'profile', allWork: 'See all work', imprint: 'Imprint', caseLabel: '(case)', moreWork: '(more work)', openCase: 'Open the case', footer: 'Markus Kriesmair — Portfolio 2026', langLabel: 'Language',
     names: { art: 'Art Direction', cd: 'Creative Direction', strategy: 'Creative Strategy' },
   },
 } as const;

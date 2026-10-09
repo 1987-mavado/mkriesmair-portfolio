@@ -1,10 +1,12 @@
 // Sitemap with hreflang alternates: only canonical, indexable URLs.
 import type { APIRoute } from 'astro';
-import { SITE, routes } from '../data/seo';
+import { SITE, routes, caseRoute } from '../data/seo';
+import { CASE_SLUGS } from '../components/Portfolio.jsx';
 
 export const GET: APIRoute = () => {
   const lastmod = new Date().toISOString().slice(0, 10);
-  const urls = Object.values(routes).flatMap((r) =>
+  const all = [...Object.values(routes), ...Object.values(CASE_SLUGS).map((slug) => caseRoute(slug as string))];
+  const urls = all.flatMap((r) =>
     (['de', 'en'] as const).map(
       (l) => `  <url>
     <loc>${SITE}${r[l]}</loc>

@@ -13,6 +13,8 @@ Static Astro site with a single React island.
 - `src/components/Portfolio.jsx` — the home page (markup, case data, interactions); English is the source language
 - `src/i18n/de.json` — German strings, looked up by their English text (`ui` = page copy, `data` = case data)
 - `src/components/ServicePage.astro` + `src/data/services.ts` — the three service pages in both languages
+- `src/data/seo.ts` → `serviceCases` — which case studies each service page shows, and in which order
+- `src/components/CasePage.astro` + `src/pages/cases/[slug].astro` — one addressable page per case (`/cases/<slug>/`, `/en/cases/<slug>/`); slugs live in `CASE_SLUGS` in `Portfolio.jsx`
 - `src/data/seo.ts` — routes per language, contact data, structured data
 - `src/layouts/Base.astro` — meta tags, canonical, hreflang, Open Graph, JSON-LD
 - `src/components/Slot.jsx` — image slots; images and crops come from `src/data/slots.json`

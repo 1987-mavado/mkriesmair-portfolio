@@ -1,0 +1,62 @@
+---
+// Directly addressable case study: /cases/<slug>/ and /en/cases/<slug>/.
+// The case opens in the same overlay as everywhere else; its full content is part of the
+// server-rendered HTML. Behind it sits the work slider with all cases.
+import Base from '../layouts/Base.astro';
+import SiteHeader from './SiteHeader.astro';
+import ContactFooter from './ContactFooter.astro';
+import Portfolio, { caseList } from './Portfolio.jsx';
+import { SITE, routes, caseRoute, personLd, type Lang } from '../data/seo';
+import { ui } from '../data/services';
+
+interface Props { lang: Lang; slug: string; }
+const { lang, slug } = Astro.props;
+const t = ui[lang];
+const c = caseList(lang).find((x) => x.slug === slug)!;
+const home = routes.home[lang];
+const alternates = caseRoute(slug);
+const url = SITE + alternates[lang];
+const title = `${c.brand} — ${c.title.replace(/\.$/, '')} | Markus Kriesmair`;
+const description = c.body.length > 158 ? c.body.slice(0, 155).replace(/\s+\S*$/, '') + ' …' : c.body;
+const jsonLd = [
+  personLd(lang),
+  { '@type': 'CreativeWork', '@id': `${url}#case`, url, name: c.brand, headline: c.title, description: c.body, inLanguage: lang, creator: { '@id': `${SITE}/#person` } },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Markus Kriesmair', item: SITE + home },
+      { '@type': 'ListItem', position: 2, name: c.brand, item: url },
+    ],
+  },
+];
+---
+<Base lang={lang} title={title} description={description} alternates={alternates} jsonLd={jsonLd}>
+  <SiteHeader lang={lang} alternates={alternates} />
+  <main>
+    <div class="wrap">
+      <section class="grid cs-hero">
+        <div class="c-label label cs-pt">{t.caseLabel}</div>
+        <div class="c-main">
+          <h1 class="tanker">{c.brand}</h1>
+          <p class="lead cs-lead">{c.title}</p>
+          <p class="body-m cs-body">{c.body}</p>
+        </div>
+      </section>
+      <div class="grid cs-more"><h2 class="c-label label">{t.moreWork}</h2></div>
+    </div>
+    <Portfolio client:load lang={lang} mode="case" openKey={c.key} />
+    <div class="wrap">
+      <ContactFooter lang={lang} label={t.contactLabel.replace('(05)', '(02)')} />
+    </div>
+  </main>
+</Base>
+
+<style>
+  .cs-pt { padding-top: .6em; }
+  .cs-hero { padding: clamp(72px, 11vw, 160px) 0 96px; row-gap: 16px; }
+  h1 { margin: 0; font-size: clamp(44px, 7.4vw, 112px); line-height: 1.06; text-transform: uppercase; text-wrap: balance; }
+  .cs-lead { margin-top: 32px; max-width: 34ch; color: var(--text); }
+  .cs-body { margin-top: 20px; max-width: 60ch; }
+  .cs-more { padding-bottom: 24px; }
+  .cs-more h2 { margin: 0; font-weight: 400; }
+</style>

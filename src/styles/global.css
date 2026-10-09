@@ -142,3 +142,7 @@ header.site-header { height: 0 !important; }
 
 /* Hero: name and roles (h1) above the availability line; centred in portrait. */
 @media (orientation: portrait) { [data-hero-id] { align-items: center !important; } }
+
+/* Work slider controls: the German hint is longer than the English one and would push the
+   prev/next buttons off narrow phones, so it steps aside there. */
+@media (max-width: 430px) { html[lang="de"] .ctl-hint { display: none; } }

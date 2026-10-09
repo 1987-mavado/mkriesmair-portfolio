@@ -1,0 +1,44 @@
+---
+// Header of the static pages (service and case pages): logo, nav, DE | EN switch.
+import { routes, type Lang } from '../data/seo';
+import { ui } from '../data/services';
+
+interface Props { lang: Lang; current?: 'art' | 'cd' | 'strategy'; alternates: { de: string; en: string }; }
+const { lang, current, alternates } = Astro.props;
+const t = ui[lang];
+const home = routes.home[lang];
+const arrow = 'M2.5 8h11M8.5 3l5 5-5 5';
+---
+<header class="sv-head wrap">
+  <a href={home} class="sv-logo" aria-label="Markus Kriesmair"><img src="/uploads/240316-logo-markus-kriesmair-abbinder.png" alt="markus kriesmair" width="226" height="44" /></a>
+  <nav class="sv-nav" aria-label="Main">
+    <a href={home} class="sv-nav-home">{t.navHome}</a>
+    <a href={routes.art[lang]} aria-current={current === 'art' ? 'page' : undefined}>{t.navArt}</a>
+    <a href={routes.cd[lang]} aria-current={current === 'cd' ? 'page' : undefined}>{t.navCd}</a>
+    <a href={routes.strategy[lang]} aria-current={current === 'strategy' ? 'page' : undefined}>{t.navStrategy}</a>
+    <a href="#contact" class="sv-nav-contact">{t.navContact} <svg aria-hidden="true" viewBox="0 0 16 16"><path d={arrow} /></svg></a>
+  </nav>
+  <div class="sv-lang" role="group" aria-label={t.langLabel}>
+    <a href={alternates.de} data-lang-switch="de" hreflang="de" lang="de" aria-label="Deutsch" aria-current={lang === 'de' ? 'true' : undefined}>DE</a><span aria-hidden="true">|</span><a href={alternates.en} data-lang-switch="en" hreflang="en" lang="en" aria-label="English" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+  </div>
+</header>
+
+<style>
+  .sv-head { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding-top: 20px; padding-bottom: 20px; }
+  .sv-logo img { display: block; height: 44px; width: auto; max-width: 56vw; filter: invert(1); }
+  .sv-nav { display: flex; gap: 28px; align-items: center; margin-left: auto; font-size: 16px; font-weight: 300; white-space: nowrap; }
+  .sv-nav a:hover, .sv-lang a:hover { color: var(--label); text-decoration: none; }
+  .sv-nav a[aria-current] { font-weight: 500; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+  .sv-nav-contact { font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+  svg { width: .8em; height: .8em; flex: none; overflow: visible; }
+  svg path { fill: none; stroke: currentColor; stroke-width: 2.8; stroke-linecap: square; stroke-linejoin: round; }
+  .sv-lang { display: flex; gap: 8px; align-items: center; font-size: 13px; letter-spacing: .06em; color: var(--dim); }
+  .sv-lang a { color: var(--label); font-weight: 300; }
+  .sv-lang a[aria-current] { color: var(--text); font-weight: 700; }
+  @media (max-width: 980px) {
+    .sv-lang { order: 2; margin-left: auto; }
+    .sv-nav { order: 3; margin-left: 0; flex: 1 0 100%; justify-content: space-between; gap: 6px; font-size: clamp(10px, 2.95vw, 16px); min-width: 0; }
+  }
+  /* On phones the logo already links home, so the nav drops that item to stay on one row. */
+  @media (max-width: 560px) { .sv-nav-home { display: none; } }
+</style>

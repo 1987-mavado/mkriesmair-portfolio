@@ -1,0 +1,38 @@
+---
+// Contact block and footer of the static pages.
+import { contact, type Lang } from '../data/seo';
+import { ui } from '../data/services';
+interface Props { lang: Lang; label: string; }
+const { lang, label } = Astro.props;
+const t = ui[lang];
+---
+<section id="contact" class="grid sv-contact" aria-labelledby="contact-h">
+  <div class="c-label label sv-pt">{label}</div>
+  <div class="c-main">
+    <h2 id="contact-h" class="tanker">{t.contactH}</h2>
+    <p class="lead sv-lead">{t.contactLead}</p>
+  </div>
+  <div class="c-full sv-cards">
+    <a href={`mailto:${contact.email}`}><span class="label">{t.email}</span><span>{contact.email}</span></a>
+    <a href={contact.phoneHref}><span class="label">{t.phone}</span><span>{contact.phone}</span></a>
+    <a href={contact.linkedin} target="_blank" rel="noopener noreferrer"><span class="label">{t.profile}</span><span>LinkedIn</span></a>
+  </div>
+</section>
+<footer class="sv-foot label">
+  <span>{t.footer}</span>
+  <span><a href="/imprint/">{t.imprint}</a></span>
+</footer>
+
+<style>
+  .sv-pt { padding-top: .6em; }
+  .sv-lead { margin-top: 32px; max-width: 34ch; }
+  .sv-contact { padding: 40px 0 32px; row-gap: 40px; }
+  /* Line-height leaves room for umlaut dots (Ü) under the line above when the heading wraps. */
+  .sv-contact h2 { margin: 0; font-size: clamp(40px, 5.6vw, 80px); line-height: 1.06; text-transform: uppercase; text-wrap: balance; }
+  .sv-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--g-gap); }
+  .sv-cards a { background: var(--surface); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 24px; font-size: 18px; }
+  .sv-cards a:hover { background: var(--surface-2); text-decoration: none; }
+  .sv-foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 48px 0 40px; }
+  .sv-foot a { color: var(--label); }
+  .sv-foot a:hover { color: var(--text); text-decoration: none; }
+</style>

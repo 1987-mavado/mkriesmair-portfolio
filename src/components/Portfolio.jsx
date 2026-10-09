@@ -28,6 +28,10 @@ const hasDOM = typeof window !== 'undefined';
 import DE from '../i18n/de.json';
 let LANG = 'en';
 const T = (s) => { if (LANG !== 'de') return s; const k = s.trim(); return k in DE.ui ? s.replace(k, () => DE.ui[k]) : s; };
+// Case study URLs (same slug in both languages). Opening a case pushes its URL, so the
+// browser's back button closes it and the address can be shared or opened directly.
+export const CASE_SLUGS = { ducati: 'ducati', o2: 'o2-record-race', bmw2: 'bmw-2', tonline: 't-online', bmw1: 'bmw-1', bmwx4: 'bmw-x4', aokback: 'aok-ruecken', union: 'union-investment', yelp: 'yelp', saturn: 'saturn-tech-nick', db: 'deutsche-bahn' };
+export const caseUrl = (lang, key) => (lang === 'de' ? '' : '/en') + '/cases/' + CASE_SLUGS[key] + '/';
 const EN = (v) => (LANG === 'de' ? null : 'EN: ' + v);
 const PAT = [[/^Play video: /, 'Video abspielen: '], [/^Play audio: /, 'Audio abspielen: '], [/ — image (\d+) of (\d+)$/, ' — Bild $1 von $2'], [/ — case image/, ' — Case-Bild'], [/ — film (\d+)$/, ' — Film $1']];
 const tr = (v) => {
@@ -51,7 +55,7 @@ export default class Portfolio extends React.Component {
   }
   toggleAudio(src) { const a = this.getAudio(src); if (a.paused) { document.querySelectorAll('video').forEach(v => { if (!v.muted) v.pause(); }); a.play().catch(() => {}); } else a.pause(); }
   seekAudio(src, f) { const a = this.getAudio(src); const go = () => { a.currentTime = Math.max(0, Math.min(1, f)) * a.duration; }; if (a.duration) go(); else a.addEventListener('loadedmetadata', go, { once: true }); }
-  state = { open: {}, grid: null, aiFine: null, heroPortrait: null };
+  state = { open: this.props.openKey ? { [this.props.openKey]: true } : {}, grid: null, aiFine: null, heroPortrait: null };
   aiFolRef = React.createRef();
   ceWrapRef = React.createRef();
   ceSvgRef = React.createRef();
@@ -63,6 +67,10 @@ export default class Portfolio extends React.Component {
   cur() { const sc = this.scRef.current; if (!sc) return 0; const pl = parseFloat(getComputedStyle(sc).paddingLeft) || 0; let best = 0, d = 1e9; [...sc.children].forEach((c, i) => { const x = Math.abs(c.offsetLeft - pl - sc.scrollLeft); if (x < d) { d = x; best = i; } }); return best; }
   componentDidMount() {
     this._mounted = true; this.forceUpdate();
+    if (Object.keys(this.state.open || {}).length) document.body.style.overflow = 'hidden';
+    this._pop = e => { const k = e.state && e.state.case; if (this._setOpen) this._setOpen(k || null, !!k, true); };
+    window.addEventListener('popstate', this._pop);
+    this._syncLang();
     // Deep links from the service pages (/#case-…): bring the work slider to that case and open it.
     const hash = decodeURIComponent(window.location.hash || '');
     if (hash.startsWith('#case-')) this._deep = setTimeout(() => {
@@ -88,7 +96,7 @@ export default class Portfolio extends React.Component {
     setTimeout(this._fade, 50);
     this._key = () => {};
     window.addEventListener('keydown', this._key);
-    this._esc = e => { if (e.key === 'Escape' && !this.state.lb && Object.keys(this.state.open || {}).length) { document.body.style.overflow = ''; this.setState({ open: {} }); } };
+    this._esc = e => { if (e.key === 'Escape' && !this.state.lb && Object.keys(this.state.open || {}).length) this._setOpen(null, false); };
     window.addEventListener('keydown', this._esc);
     const clean = () => document.querySelectorAll('image-slot[data-logo]').forEach(el => { const r = el.shadowRoot; if (r && !r.querySelector('style[data-logo]')) { const st = document.createElement('style'); st.setAttribute('data-logo', ''); st.textContent = '.frame{background:transparent!important}.ring{display:none!important}'; r.appendChild(st); } });
     clean(); setTimeout(clean, 300); setTimeout(clean, 1500);
@@ -172,7 +180,10 @@ export default class Portfolio extends React.Component {
     this.drawLines();
   }
   componentDidUpdate() { this._logoSrc && this._logoSrc(); }
-  componentWillUnmount() { clearTimeout(this._deep); this._portMq && this._portMq.removeEventListener('change', this._portFn); if (this._au) this._au.pause(); this._ceIO && this._ceIO.disconnect(); window.removeEventListener('pointermove', this._aiMove); window.removeEventListener('scroll', this._aiScroll); this._fineMq && this._fineMq.removeEventListener('change', this._aiMq); this._aiSt && clearInterval(this._aiSt.cyc); this._ro && this._ro.disconnect(); window.removeEventListener('keydown', this._key); window.removeEventListener('keydown', this._esc); document.body.style.overflow = ''; this._io && this._io.disconnect(); window.removeEventListener('pointermove', this._pm); window.removeEventListener('pointerup', this._pu); clearInterval(this._clock); window.removeEventListener('scroll', this._fade, true); window.removeEventListener('resize', this._fade); }
+  componentDidUpdate() { this._syncLang(); }
+  // Language switch follows the open case: DE | EN then lead to that case in the other language.
+  _syncLang() { const k = Object.keys(this.state.open || {})[0]; document.querySelectorAll('a[data-lang-switch]').forEach(a => { if (!a.dataset.base) a.dataset.base = a.getAttribute('href'); a.setAttribute('href', k ? caseUrl(a.getAttribute('data-lang-switch'), k) : a.dataset.base); }); }
+  componentWillUnmount() { window.removeEventListener('popstate', this._pop); document.body.style.overflow = ''; clearTimeout(this._deep); this._portMq && this._portMq.removeEventListener('change', this._portFn); if (this._au) this._au.pause(); this._ceIO && this._ceIO.disconnect(); window.removeEventListener('pointermove', this._aiMove); window.removeEventListener('scroll', this._aiScroll); this._fineMq && this._fineMq.removeEventListener('change', this._aiMq); this._aiSt && clearInterval(this._aiSt.cyc); this._ro && this._ro.disconnect(); window.removeEventListener('keydown', this._key); window.removeEventListener('keydown', this._esc); document.body.style.overflow = ''; this._io && this._io.disconnect(); window.removeEventListener('pointermove', this._pm); window.removeEventListener('pointerup', this._pu); clearInterval(this._clock); window.removeEventListener('scroll', this._fade, true); window.removeEventListener('resize', this._fade); }
   revealDraw(root) {
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     root.querySelectorAll('[data-draw]').forEach(p => { if (rm) p.style.transition = 'none'; p.style.strokeDashoffset = '0'; });
@@ -215,7 +226,11 @@ export default class Portfolio extends React.Component {
     })());
     const f = t => ({ t, ph: /^\[.*\]$/.test(t), np: !/^\[.*\]$/.test(t) });
     const open = this.state.open;
-    const setOpen = (k, v) => { document.body.style.overflow = v ? 'hidden' : ''; this.setState({ open: v ? { [k]: true } : {} }); };
+    const setOpen = (k, v, fromHistory) => {
+      document.body.style.overflow = v ? 'hidden' : ''; this.setState({ open: v ? { [k]: true } : {} });
+      if (hasDOM && !fromHistory) { if (v) window.history.pushState({ case: k }, '', caseUrl(LANG, k)); else if (window.history.state && window.history.state.case) window.history.back(); }
+    };
+    this._setOpen = setOpen;
     const raw = [
       { key:'bmwx4', brand:'BMW X4', anchor:'case-bmwx4', slotId:'m3-case-bmwx4', slotSrc:'/assets/bmwx4-ooh-front.webp', slotHint:'BMW X4 — launch motif, out of home',
         tags:['BMW','Launch','Art direction','Print','OOH'],
@@ -347,7 +362,7 @@ export default class Portfolio extends React.Component {
         quote:'"The goal is to bring these jobs to life and present them as honestly as possible."', quoteBy:'Kerstin Wagner, Head of Talent Acquisition, Deutsche Bahn',
         year:'2018–2020', org:'thjnk Hamburg' }
     ];
-    const order = ['ducati','o2','bmw2','tonline','bmw1','bmwx4','aokback','union','yelp','saturn','db'];
+    const order = this.props.caseKeys || ['ducati','o2','bmw2','tonline','bmw1','bmwx4','aokback','union','yelp','saturn','db'];
     for (let i = 0; i < raw.length; i++) raw[i] = tr(raw[i]);
     raw.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
     const cases = raw.map((c, i) => {
@@ -525,6 +540,7 @@ export default class Portfolio extends React.Component {
     const {
       heroPortrait, ac, hasAc, scRef, cntRef, prev, next, caseTotal, workCases, acClose, openSaturn, openTonline, marquee, clockRef, introWords, aiWords, films, boards, cardTrans, boardTrans, dbTabs, dbRows, hasTabs, tabsLabel, lbOpen, lbSrc, lbVideo, lbFrame, lbTitle, lbClose, lbStop, lbCloseRef, aiFolRef, aiFollow, aiInline, aiRows, inGerman, showGrid, gridCols, gridLabel, toggleGrid, ceWrapRef, ceSvgRef, ceVisRef, cases, requirements, awards, method
     } = this.renderVals();
+    const full = (this.props.mode || 'home') === 'home';
     return (
       <>
 
@@ -539,6 +555,7 @@ export default class Portfolio extends React.Component {
 </>)}
 
 
+{full && (<>
 <header className="site-header" style={css("position:sticky;top:0;z-index:20;background:transparent")}>
 <div style={css("max-width:1440px;margin:0 auto;padding:0 var(--g-m);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-top:20px;padding-bottom:20px")}>
 <a href="#top" aria-label="markus kriesmair" style={css("display:flex;align-items:center;text-decoration:none")}><img src="/uploads/240316-logo-markus-kriesmair-abbinder.png" alt="markus kriesmair" style={css("display:block;height:44px;width:auto;max-width:56vw;object-fit:contain;object-position:left center;filter:invert(1)")} /></a>
@@ -546,7 +563,7 @@ export default class Portfolio extends React.Component {
 <a href="#leadership">{T("leadership")}</a><a href="#work">{T("work")}</a><a href="#process">{T("process")}</a><a href="#about">{T("about")}</a><a href="#ai">{T("ai")}</a><a href="#contact" style={css("font-weight:700")} className="hv2">{T("contact ")}<svg aria-hidden="true" viewBox="0 0 16 16" style={css("width:.8em;height:.8em;flex:none;overflow:visible;transform:rotate(0deg)")}><path d="M2.5 8h11M8.5 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="square" strokeLinejoin="round" strokeMiterlimit="2"></path></svg></a>
 </nav>
 <div className="site-lang" role="group" aria-label={T("Language")} style={css("display:flex;gap:8px;align-items:center;font-size:13px;letter-spacing:.06em;color:#5B5F66")}>
-<a href="/" hrefLang="de" lang="de" aria-label="Deutsch" aria-current={LANG === 'de' ? 'true' : undefined} style={{ color: LANG === 'de' ? '#F2F2F0' : '#8C9098', fontWeight: LANG === 'de' ? 700 : 300 }} className="hv2">DE</a><span aria-hidden="true">|</span><a href="/en/" hrefLang="en" lang="en" aria-label="English" aria-current={LANG === 'en' ? 'true' : undefined} style={{ color: LANG === 'en' ? '#F2F2F0' : '#8C9098', fontWeight: LANG === 'en' ? 700 : 300 }} className="hv2">EN</a>
+<a href="/" data-lang-switch="de" hrefLang="de" lang="de" aria-label="Deutsch" aria-current={LANG === 'de' ? 'true' : undefined} style={{ color: LANG === 'de' ? '#F2F2F0' : '#8C9098', fontWeight: LANG === 'de' ? 700 : 300 }} className="hv2">DE</a><span aria-hidden="true">|</span><a href="/en/" data-lang-switch="en" hrefLang="en" lang="en" aria-label="English" aria-current={LANG === 'en' ? 'true' : undefined} style={{ color: LANG === 'en' ? '#F2F2F0' : '#8C9098', fontWeight: LANG === 'en' ? 700 : 300 }} className="hv2">EN</a>
 </div>
 </div>
 </header>
@@ -606,13 +623,16 @@ export default class Portfolio extends React.Component {
 </section>
 </div>
 
+</>)}
 <section id="work" style={css("padding:0 0 72px")}>
 <div style={css("max-width:1440px;margin:0 auto;padding:0 var(--g-m);display:grid;grid-template-columns:repeat(var(--g-cols),minmax(0,1fr));column-gap:var(--g-gap);row-gap:40px")}>
+{full && (<>
 <div style={css("grid-column:var(--g-label);font-family:'Satoshi',sans-serif;font-size:13px;letter-spacing:.04em;color:#8C9098;padding-top:1.4em")}>{T("(02) selected work")}</div>
 <h2 style={css("font-family:'Tanker','Satoshi',sans-serif;font-weight:400;letter-spacing:0;grid-column:var(--g-main);margin:0;font-size:clamp(56px,10vw,168px);line-height:.9;color:#F2F2F0")}>{T("work")}</h2>
 <p style={css("grid-column:var(--g-main);margin:0;max-width:34ch;font-size:clamp(20px,1.8vw,28px);font-weight:300;line-height:1.35;color:#8C9098;text-wrap:pretty")}>{T("Automotive, health, finance, launches and in-house brand work — each a different kind of trust to earn.")}</p>
-<div style={css("grid-column:var(--g-full);display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:48px")}>
-<span style={css("display:flex;gap:14px;align-items:center;white-space:nowrap;font-family:'Satoshi',sans-serif;font-size:13px;letter-spacing:.04em;color:#8C9098")}><span ref={cntRef}>01</span> / {caseTotal} <span style={css("color:#5B5F66")}>{T("drag or click")}</span></span>
+</>)}
+<div style={css(`grid-column:var(--g-full);display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:${full ? 48 : 0}px`)}>
+<span style={css("display:flex;gap:14px;align-items:center;white-space:nowrap;font-family:'Satoshi',sans-serif;font-size:13px;letter-spacing:.04em;color:#8C9098")}><span ref={cntRef}>01</span> / {caseTotal} <span className="ctl-hint" style={css("color:#5B5F66")}>{T("drag or click")}</span></span>
 <div style={css("display:flex;gap:24px")}><button type="button" aria-label={T("Previous case")} onClick={prev} style={css("display:inline-flex;align-items:center;gap:8px;padding:0;border:none;background:none;font-family:'Satoshi',sans-serif;font-size:16px;font-weight:700;color:#F2F2F0;text-decoration:none;cursor:pointer")} className="hv5"><svg aria-hidden="true" viewBox="0 0 16 16" style={css("width:.8em;height:.8em;flex:none;overflow:visible;transform:rotate(180deg)")}><path d="M2.5 8h11M8.5 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="square" strokeLinejoin="round" strokeMiterlimit="2"></path></svg>{T(" prev")}</button><button type="button" aria-label={T("Next case")} onClick={next} style={css("display:inline-flex;align-items:center;gap:8px;padding:0;border:none;background:none;font-family:'Satoshi',sans-serif;font-size:16px;font-weight:700;color:#F2F2F0;text-decoration:none;cursor:pointer")} className="hv6">{T("next ")}<svg aria-hidden="true" viewBox="0 0 16 16" style={css("width:.8em;height:.8em;flex:none;overflow:visible;transform:rotate(0deg)")}><path d="M2.5 8h11M8.5 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="square" strokeLinejoin="round" strokeMiterlimit="2"></path></svg></button></div>
 </div>
 </div>
@@ -732,6 +752,7 @@ export default class Portfolio extends React.Component {
 </section>
 
 <div style={css("max-width:1440px;margin:0 auto;padding:0 var(--g-m)")}>
+{full && (<>
 
 <section id="process" style={css("position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(var(--g-cols),minmax(0,1fr));column-gap:var(--g-gap);row-gap:40px;padding:96px 0 96px;margin-bottom:96px")}>
 <div aria-hidden="true" style={css("position:absolute;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;z-index:-1;overflow:hidden;pointer-events:none;background:#000000")}><img src="/assets/process-bg.gif" alt="" style={css("position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.4);transform-origin:center;display:block")} /></div>
@@ -813,6 +834,7 @@ export default class Portfolio extends React.Component {
 <span style={css("display:flex;gap:24px")}><a href="/imprint/" style={css("color:#8C9098")}>{T("Imprint")}</a><a href="#top" style={css("color:#8C9098")}>{T("Privacy")}</a></span>
 </footer>
 </section>
+</>)}
 {(lbOpen) && (<><div role="dialog" aria-modal="true" aria-label={lbTitle} onClick={lbClose} style={css("position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:clamp(16px,5vw,80px)")}>
 <button type="button" ref={lbCloseRef} onClick={lbClose} aria-label={T("Close video")} style={css("position:absolute;top:16px;right:24px;padding:0;border:none;background:none;color:#F2F2F0;cursor:pointer;font-family:'Tanker','Satoshi',sans-serif;font-size:44px;line-height:1")} className="hv24 hv25">X</button>
 <div onClick={lbStop} style={css("position:relative;width:min(100%,calc((100vh - 160px) * 16 / 9));aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#0C0D0F")}>{(lbVideo) && (<><video src={lbSrc} controls autoPlay playsInline aria-label={lbTitle} style={css("position:absolute;inset:0;width:100%;height:100%;background:#000000")}></video></>)}{(lbFrame) && (<><iframe src={lbSrc} title={lbTitle} referrerPolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen style={css("position:absolute;inset:0;width:100%;height:100%;border:0")}></iframe></>)}</div>
@@ -824,3 +846,6 @@ export default class Portfolio extends React.Component {
     );
   }
 }
+
+// Case titles and summaries for the static pages (case routes, meta tags).
+export const caseList = (lang) => new Portfolio({ lang }).renderVals().cases.map((c) => ({ key: c.key, slug: CASE_SLUGS[c.key], brand: c.brand, title: c.title, body: c.body, role: c.role && c.role.t ? c.role.t : c.role, img: c.slotSrc || '' }));

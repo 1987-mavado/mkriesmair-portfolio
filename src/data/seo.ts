@@ -44,3 +44,15 @@ export const websiteLd = (lang: Lang) => ({
   inLanguage: ['de', 'en'],
   publisher: { '@id': `${SITE}/#person` },
 });
+
+// Which case studies each service page shows, in display order. Keys are the case ids used
+// in Portfolio.jsx (see CASE_SLUGS there). Edit here to change the assignment.
+// Requested but not in the portfolio data yet (art): "Pferdeschwänze" (position 4) and
+// "McDonald's Corporate Responsibility Report" (position 6) — add their keys once the cases exist.
+export const serviceCases = {
+  art: ['bmwx4', 'saturn', 'bmw2', 'yelp', 'aokback', 'bmw1'],
+  cd: ['ducati', 'tonline', 'o2'],
+  strategy: ['ducati', 'tonline', 'o2'],
+} as const;
+
+export const caseRoute = (slug: string) => ({ de: `/cases/${slug}/`, en: `/en/cases/${slug}/` });
