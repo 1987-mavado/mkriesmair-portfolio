@@ -3,5 +3,6 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://mkriesmair.online',
+  trailingSlash: 'always',
   integrations: [react()],
 });

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base lang="de" title="Seite nicht gefunden — Markus Kriesmair" description="Diese Seite gibt es nicht." noindex>
+  <main class="wrap nf">
+    <a href="/" aria-label="Markus Kriesmair"><img src="/uploads/240316-logo-markus-kriesmair-abbinder.png" alt="markus kriesmair" /></a>
+    <div>
+      <p class="label">(404)</p>
+      <h1 class="tanker">Seite nicht gefunden.<br /><span lang="en">Page not found.</span></h1>
+      <p class="links"><a href="/">Zur Startseite</a><a href="/en/" lang="en" hreflang="en">Go to the homepage</a></p>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .nf { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; gap: 64px; padding-top: 20px; padding-bottom: 96px; }
+  img { display: block; height: 44px; width: auto; filter: invert(1); }
+  h1 { margin: 16px 0 40px; font-size: clamp(44px, 7.4vw, 112px); line-height: .92; text-transform: uppercase; }
+  h1 span { color: var(--label); }
+  .links { margin: 0; display: flex; gap: 16px 40px; flex-wrap: wrap; font-family: 'Tanker', 'Satoshi', sans-serif; font-size: 20px; text-transform: uppercase; }
+</style>

@@ -104,11 +104,13 @@ mark.ph { background: var(--mark-bg); color: #000000; padding: 1px 4px; }
 [data-scroller] { scrollbar-width: none; }
 [data-scroller]::-webkit-scrollbar { display: none; }
 
-/* Header nav: never wraps item by item. Below 760px the whole nav drops onto its own row
-   under the logo and spreads across the full width, so "contact" is neither orphaned nor squeezed. */
-.site-nav { flex-wrap: nowrap !important; white-space: nowrap; }
-@media (max-width: 760px) {
-  .site-nav { flex: 1 0 100%; justify-content: space-between; gap: 6px !important; font-size: clamp(10px, 4vw, 16px) !important; min-width: 0; }
+/* Header: logo · nav · language switch. The nav never wraps item by item. Below 860px the
+   whole nav drops onto its own row under the logo (language switch stays on the logo row). */
+.site-nav { flex-wrap: nowrap !important; white-space: nowrap; margin-left: auto; }
+.site-lang a { text-decoration: none; }
+@media (max-width: 860px) {
+  .site-lang { order: 2; margin-left: auto; }
+  .site-nav { order: 3; margin-left: 0; flex: 1 0 100%; justify-content: space-between; gap: 6px !important; font-size: clamp(10px, 4vw, 16px) !important; min-width: 0; }
 }
 
 /* Hero: centre the status line, CTAs and meta row in portrait orientation. */
@@ -137,3 +139,6 @@ header.site-header { height: 0 !important; }
 /* Hero CTAs: when they stack, the line distance is 1.5 times the font size (20px type, 30px line to line). */
 [data-hero-ctas] { row-gap: 10px !important; }
 [data-hero-ctas] > a { line-height: 1 !important; }
+
+/* Hero: name and roles (h1) above the availability line; centred in portrait. */
+@media (orientation: portrait) { [data-hero-id] { align-items: center !important; } }

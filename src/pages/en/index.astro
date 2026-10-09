@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import Portfolio from '../../components/Portfolio.jsx';
+import { routes, personLd, websiteLd } from '../../data/seo';
+---
+<Base
+  lang="en"
+  title="Markus Kriesmair | Art Director & Creative Director Munich"
+  description="Markus Kriesmair – Art Director, Creative Director & Creative Strategist in Munich. Strategy, concepts and creative leadership."
+  alternates={routes.home}
+  jsonLd={[personLd('en'), websiteLd('en')]}
+>
+  <Portfolio client:load lang="en" />
+</Base>

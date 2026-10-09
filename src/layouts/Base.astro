@@ -2,10 +2,22 @@
 import '../styles/fonts.css';
 import '../styles/global.css';
 import '../styles/hover.css';
+import { SITE, OG_IMAGE } from '../data/seo';
 
-interface Props { title: string; description: string; lang?: string; }
-const { title, description, lang = 'en' } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'de' | 'en';
+  /** Canonical paths of the German and English version of this page (for hreflang). */
+  alternates?: { de: string; en: string };
+  ogImage?: string;
+  jsonLd?: object[];
+  noindex?: boolean;
+}
+const { title, description, lang = 'de', alternates, ogImage = OG_IMAGE, jsonLd = [], noindex = false } = Astro.props;
+const abs = (p: string) => new URL(p, SITE).href;
+const canonical = abs(Astro.url.pathname);
+const ld = jsonLd.length ? JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd }) : '';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -14,14 +26,31 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
+    {alternates && !noindex && (
+      <>
+        <link rel="alternate" hreflang="de" href={abs(alternates.de)} />
+        <link rel="alternate" hreflang="en" href={abs(alternates.en)} />
+        <link rel="alternate" hreflang="x-default" href={abs(alternates.de)} />
+      </>
+    )}
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Markus Kriesmair" />
+    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_GB'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={abs(ogImage)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={abs(ogImage)} />
     <meta name="theme-color" content="#0C0D0F" />
     <link rel="preload" href="/fonts/Tanker-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Satoshi-300.woff2" as="font" type="font/woff2" crossorigin />
+    {ld && <script type="application/ld+json" set:html={ld} />}
   </head>
   <body>
     <slot />
