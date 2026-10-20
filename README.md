@@ -26,7 +26,9 @@ a German entry whose English key no longer matches silently falls back to Englis
 
 ## Deploy (Vercel)
 
-Framework preset "Astro", build command `npm run build`, output `dist`. No environment variables.
+Connected to GitHub (`1987-mavado/mkriesmair-portfolio`): every push to `main` deploys to
+production at mkriesmair.online. Build settings are pinned in `vercel.json` (Astro, `npm run build`,
+output `dist`). No environment variables.
 
 ## Open items
 
