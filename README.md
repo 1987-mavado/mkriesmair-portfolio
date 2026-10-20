@@ -30,6 +30,9 @@ Connected to GitHub (`1987-mavado/mkriesmair-portfolio`): every push to `main` d
 production at mkriesmair.online. Build settings are pinned in `vercel.json` (Astro, `npm run build`,
 output `dist`). No environment variables.
 
+Vercel only deploys commits whose author it can match to the GitHub account, so this repo uses
+the account's noreply address as `user.email` (set in the local Git config).
+
 ## Open items
 
 - Privacy page (footer link is a placeholder)
