@@ -179,8 +179,14 @@ export default class Portfolio extends React.Component {
     if (img) img.addEventListener('load', () => this.drawLines());
     this.drawLines();
   }
-  componentDidUpdate() { this._logoSrc && this._logoSrc(); }
-  componentDidUpdate() { this._syncLang(); }
+  componentDidUpdate() {
+    // Case films are iframes with data-src; this sets their src once the case is rendered.
+    this._logoSrc && this._logoSrc();
+    this._syncLang();
+    // While a case is open, pause the hero's background video so the case film gets the bandwidth.
+    const hv = document.querySelector('#top video');
+    if (hv) { const open = Object.keys(this.state.open || {}).length > 0; if (open && !hv.paused) hv.pause(); else if (!open && hv.paused) hv.play().catch(() => {}); }
+  }
   // Language switch follows the open case: DE | EN then lead to that case in the other language.
   _syncLang() { const k = Object.keys(this.state.open || {})[0]; document.querySelectorAll('a[data-lang-switch]').forEach(a => { if (!a.dataset.base) a.dataset.base = a.getAttribute('href'); a.setAttribute('href', k ? caseUrl(a.getAttribute('data-lang-switch'), k) : a.dataset.base); }); }
   componentWillUnmount() { window.removeEventListener('popstate', this._pop); document.body.style.overflow = ''; clearTimeout(this._deep); this._portMq && this._portMq.removeEventListener('change', this._portFn); if (this._au) this._au.pause(); this._ceIO && this._ceIO.disconnect(); window.removeEventListener('pointermove', this._aiMove); window.removeEventListener('scroll', this._aiScroll); this._fineMq && this._fineMq.removeEventListener('change', this._aiMq); this._aiSt && clearInterval(this._aiSt.cyc); this._ro && this._ro.disconnect(); window.removeEventListener('keydown', this._key); window.removeEventListener('keydown', this._esc); document.body.style.overflow = ''; this._io && this._io.disconnect(); window.removeEventListener('pointermove', this._pm); window.removeEventListener('pointerup', this._pu); clearInterval(this._clock); window.removeEventListener('scroll', this._fade, true); window.removeEventListener('resize', this._fade); }
